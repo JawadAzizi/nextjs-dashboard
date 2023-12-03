@@ -13,10 +13,10 @@ export default async function Page() {
   return (
     <>
       <p>Dashboard</p>
-      <div className="flex justify-stretch gap-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <CardWrapper cardData={cardData} />
       </div>
-      <div className="flex">
+      <div className="grid mt-4 gap-6 grid-cols-1  md:grid-cols-4 lg:grid-cols-8">
         <RevenueChart revenue={revenue} />
         <LatestInvoices latestInvoices={latestInvoices} />
       </div>
