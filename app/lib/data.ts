@@ -11,6 +11,7 @@ import {
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
 
+
 export async function fetchRevenue() {
   noStore();
   // Add noStore() here prevent the response from being cached.
@@ -153,6 +154,7 @@ export async function fetchInvoicesPages(query: string) {
 export async function fetchInvoiceById(id: string) {
   noStore()
   try {
+    console.log('here')
     const data = await sql<InvoiceForm>`
       SELECT
         invoices.id,
@@ -162,6 +164,7 @@ export async function fetchInvoiceById(id: string) {
       FROM invoices
       WHERE invoices.id = ${id};
     `;
+    console.log('data====>', data)
 
     const invoice = data.rows.map((invoice) => ({
       ...invoice,
