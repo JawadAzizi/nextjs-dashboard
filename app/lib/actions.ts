@@ -5,20 +5,39 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string(),
-  status: z.enum(['pending', 'paid']),
-  amount: z.coerce.string(),
+  customerId: z.string({
+    invalid_type_error : "Invalid CustomerId"
+  }),
+  status: z.enum(['pending', 'paid'],{
+    invalid_type_error: "Invalid Status: It is required"
+  }),
+  amount: z.coerce.number().gt(0, {message: "Please enter an amount grather than $0"}),
   date: z.string(),
 });
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
-export async function createInvoice(formData: FormData) {
-  const { amount, customerId, status } = CreateInvoice.parse({
+type State = {
+  message?: string | null,
+  errors?: {
+    customerId?: string[],
+    status?: string[],
+    amount?: string[],
+  }
+}
+export async function createInvoice(prevState: State,formData: FormData) {
+  const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
+  if(!validatedFields.success){
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Messing fields: unable to create invoice"
+    }
+  }
 
+  const { amount, customerId, status } = validatedFields.data;
   const amountCents = amount * 100;
   const date = new Date().toISOString().split('T')[0];
 
@@ -35,12 +54,19 @@ export async function createInvoice(formData: FormData) {
 }
 
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
-export async function updateInvoice(id: string, formData: FormData) {
-  const { status, customerId, amount } = UpdateInvoice.parse({
+export async function updateInvoice(id: string, prevState: State, formData: FormData) {
+  const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
+  if(!validatedFields.success){
+    return{
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Unable to update invoice: missing fields"
+    }
+  }
+  const  { status, customerId, amount } = validatedFields.data
   const amountCents = amount * 100;
 
   try {
