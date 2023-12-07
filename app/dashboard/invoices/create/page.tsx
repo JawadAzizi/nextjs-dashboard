@@ -3,8 +3,6 @@ import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
  
-
-
 export let metaData: Metadata = {
   title: "Create Invoice"
 }
