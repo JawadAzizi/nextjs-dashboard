@@ -6,7 +6,7 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { Metadata } from 'next';
 
 export const metaData: Metadata = {
-  title: "Dashboard"
+  title: "Dashboard Page"
 }
 export default async function Page() {
   

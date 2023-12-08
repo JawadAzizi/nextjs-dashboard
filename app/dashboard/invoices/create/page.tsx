@@ -4,7 +4,7 @@ import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
  
 export let metaData: Metadata = {
-  title: "Create Invoice"
+  title: "Create New Invoice"
 }
 export default async function Page() {
   const customers = await fetchCustomers();
