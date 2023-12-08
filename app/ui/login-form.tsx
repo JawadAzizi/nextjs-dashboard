@@ -65,6 +65,7 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
+          {/* Add form errors here */}
           {errorMessage && (
             <>
               <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
@@ -72,7 +73,7 @@ export default function LoginForm() {
             </>
           )}
         </div>
-          {/* Add form errors here */}
+          
       </div>
     </form>
   );
